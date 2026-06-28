@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SehatKu — Kebugaran & Gaya Hidup Sehat mandiri</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --teal:        #0D9488;
+  --teal-light:  #14B8A6;
+  --teal-pale:   #CCFBF1;
+  --teal-dark:   #0F766E;
+  --teal-xdark:  #134E4A;
+  --coral:       #F97316;
+  --coral-light: #FDBA74;
+  --navy:        #0F172A;
+  --slate:       #334155;
+  --muted:       #94A3B8;
+  --bg:          #F8FAFC;
+  --white:       #FFFFFF;
+  --border:      #E2E8F0;
+  --nav-h:       68px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--navy);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* PAGE SYSTEM */
+.page { display: none; animation: fadeUp .45s ease both; }
+.page.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* NAVBAR */
+nav {
+  position: sticky;
+  top: 0; z-index: 100;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 5vw;
+  gap: 40px;
+}
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--teal);
+  letter-spacing: -0.5px;
+  margin-right: auto;
+  cursor: pointer;
+}
+.nav-logo em { font-style: italic; color: var(--teal-dark); }
+.nav-links { display: flex; gap: 4px; }
+.nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--slate);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .18s, color .18s;
+}
+.nav-link:hover { background: var(--teal-pale); color: var(--teal-dark); }
+.nav-link.active { color: var(--teal); font-weight: 700; background: var(--teal-pale); }
+
+/* HERO */
+.hero {
+  min-height: calc(100vh - var(--nav-h));
+  background: linear-gradient(145deg, #0F172A 0%, #134E4A 55%, #0D9488 100%);
+  display: flex;
+  align-items: center;
+  padding: 80px 8vw;
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(20,184,166,.18);
+  border: 1px solid rgba(20,184,166,.4);
+  color: var(--teal-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+}
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(40px, 5.5vw, 65px);
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.hero-title em { color: var(--teal-light); font-style: italic; }
+.hero-desc { font-size: 17px; color: rgba(255,255,255,.65); margin-bottom: 40px; max-width: 480px; }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--teal-light);
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-primary:hover { background: white; transform: translateY(-2px); }
+
+.hero-visual { display: flex; flex-direction: column; gap: 16px; }
+.hero-card {
+  background: rgba(255,255,255,.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 20px;
+  padding: 24px;
+  color: white;
+}
+
+/* SECTION STYLES */
+.section { padding: 96px 8vw; max-width: 1200px; margin: 0 auto; }
+.chip { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.section-title { font-family: 'DM Serif Display', serif; font-size: clamp(30px, 4vw, 44px); line-height: 1.15; margin-bottom: 16px; }
+
+/* KETERANGAN FITUR BERANDA */
+.feature-list {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 850px;
+}
+.feature-item {
+  background: var(--white);
+  border-left: 4px solid var(--teal);
+  padding: 20px 24px;
+  border-radius: 0 16px 16px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.feature-item h4 {
+  font-size: 18px;
+  color: var(--teal-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.feature-item p {
+  font-size: 15px;
+  color: var(--slate);
+  line-height: 1.6;
+}
+
+/* CALCULATOR CORES */
+.calc-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.calc-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+.calc-card h3 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 20px; color: var(--teal-dark); }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--slate); }
+.form-group input, .form-group select {
+  width: 100%; padding: 12px; font-size: 14px; border: 1.5px solid var(--border); border-radius: 10px; outline: none; background: var(--bg);
+}
+.form-group input:focus, .form-group select:focus { border-color: var(--teal); background: white; }
+.btn-calc {
+  width: 100%; padding: 12px; background: var(--teal); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: background .2s;
+}
+.btn-calc:hover { background: var(--teal-dark); }
+.calc-result {
+  margin-top: 20px; padding: 16px; background: var(--teal-pale); border-radius: 12px; display: none; font-size: 14px; color: var(--teal-xdark);
+}
+
+/* FOOTER */
+footer { background: var(--navy); padding: 64px 8vw 40px; color: white; margin-top: 80px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand .logo { font-family: 'DM Serif Display', serif; font-size: 22px; color: white; margin-bottom: 12px; }
+.footer-brand p { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 28px; font-size: 13px; color: rgba(255,255,255,.35); }
+
+@media (max-width: 992px) {
+  .hero-inner, .calc-container { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo" onclick="showPage('home')">Sehat<em>Ku</em></div>
+  <div class="nav-links">
+    <span class="nav-link active" onclick="showPage('home')" data-page="home">Beranda</span>
+    <span class="nav-link" onclick="showPage('kalkulator')" data-page="kalkulator">Kalkulator Kebugaran</span>
+    <span class="nav-link" onclick="showPage('tentang')" data-page="tentang">Tentang Kami</span>
+  </div>
+</nav>
+
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge">Aplikasi Pemantau Kebugaran Mandiri</div>
+        <h1 class="hero-title">Gaya Hidup <em>Sehat</em> Berawal dari Data</h1>
+        <p class="hero-desc">Pantau indeks massa tubuh, kalkulasi kebutuhan energi harian, serta penuhi target hidrasi harian Anda secara mandiri dengan alat hitung interaktif kami.</p>
+        <div class="btn-primary" onclick="showPage('kalkulator')">📊 Buka Kalkulator Kesehatan</div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <h4>⚖️ 100% Mandiri</h4>
+          <p>Tanpa perlu registrasi rumit atau proses tunggu, hitung metrik tubuh Anda seketika.</p>
+        </div>
+        <div class="hero-card">
+          <h4>⚡ Akurasi Formula Klasik</h4>
+          <p>Menggunakan standardisasi global algoritma BMI, Mifflin-St Jeor, dan rasio hidrasi tubuh.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section">
+    <div class="chip">Fitur Utama</div>
+    <h2 class="section-title">Kelola Kebugaran Fisik Anda</h2>
+    
+    <div class="feature-list">
+      <div class="feature-item">
+        <h4>⚖️ Kalkulator Indeks Massa Tubuh (BMI) & Berat Badan Ideal</h4>
+        <p>Fitur ini digunakan untuk mengevaluasi proporsi tubuh berdasarkan rasio tinggi dan berat badan Anda. Selain mengklasifikasikan status tubuh ke dalam kategori kurang, normal, berlebih, atau obesitas, sistem kami kini langsung menghitung target angka berat badan ideal yang direkomendasikan secara klinis sebagai acuan kebugaran jangka panjang Anda.</p>
+      </div>
+      
+      <div class="feature-item">
+        <h4>🔥 Kalkulator Kebutuhan Energi & Kalori Harian (TDEE)</h4>
+        <p>Gunakan fitur ini untuk mengetahui kebutuhan kalori harian yang disesuaikan secara personal dengan jenis kelamin, usia, parameter fisik, serta intensitas olahraga Anda. Menghitung Basal Metabolic Rate (BMR) dan Total Daily Energy Expenditure (TDEE) untuk membantu Anda mengatur porsi makan dengan akurat, baik untuk mempertahankan, menurunkan, maupun menaikkan berat badan.</p>
+      </div>
+
+      <div class="feature-item">
+        <h4>💧 Kalkulator Target Hidrasi & Kebutuhan Air Harian</h4>
+        <p>Fitur presisi untuk memastikan tubuh Anda terhindar dari dehidrasi dengan menghitung batas minimum konsumsi cairan harian. Algoritma menyelaraskan berat badan Anda untuk memproyeksikan volume konsumsi cairan esensial baik dalam satuan mililiter (ml) maupun konversi takaran liter, demi menjaga kestabilan metabolisme serta performa organ tubuh tetap optimal.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-kalkulator">
+  <div class="section">
+    <div class="chip">Alat Interaktif</div>
+    <h2 class="section-title">Kalkulator Kesehatan Mandiri</h2>
+    <p class="section-desc">Masukkan data fisik Anda untuk mendapatkan analisis instan mengenai kondisi tubuh dan kebutuhan harian.</p>
+
+    <div class="calc-container">
+      <div class="calc-card">
+        <h3>Indeks Massa Tubuh (BMI)</h3>
+        <div class="form-group">
+          <label>Berat Badan (kg)</label>
+          <input type="number" id="bmi-weight" placeholder="Contoh: 65">
+        </div>
+        <div class="form-group">
+          <label>Tinggi Badan (cm)</label>
+          <input type="number" id="bmi-height" placeholder="Contoh: 170">
+        </div>
+        <button class="btn-calc" onclick="hitungBMI()">Hitung BMI</button>
+        <div class="calc-result" id="bmi-result"></div>
+      </div>
+
+      <div class="calc-card">
+        <h3>Kebutuhan Kalori (TDEE)</h3>
+        <div class="form-group">
+          <label>Jenis Kelamin</label>
+          <select id="cal-gender">
+            <option value="male">Pria</option>
+            <option value="female">Wanita</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div>
+              <label>Usia (tahun)</label>
+              <input type="number" id="cal-age" placeholder="25">
+            </div>
+            <div>
+              <label>Berat (kg)</label>
+              <input type="number" id="cal-weight" placeholder="60">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tinggi Badan (cm)</label>
+          <input type="number" id="cal-height" placeholder="165">
+        </div>
+        <div class="form-group">
+          <label>Tingkat Aktivitas</label>
+          <select id="cal-activity">
+            <option value="1.2">Jarang Olahraga</option>
+            <option value="1.375">Ringan (1-3 hari/minggu)</option>
+            <option value="1.55">Sedang (3-5 hari/minggu)</option>
+            <option value="1.725">Berat (6-7 hari/minggu)</option>
+          </select>
+        </div>
+        <button class="btn-calc" onclick="hitungKalori()">Hitung Kalori</button>
+        <div class="calc-result" id="cal-result"></div>
+      </div>
+
+      <div class="calc-card">
+        <h3>Kebutuhan Air Harian</h3>
+        <div class="form-group">
+          <label>Berat Badan (kg)</label>
+          <input type="number" id="water-weight" placeholder="Contoh: 70">
+        </div>
+        <button class="btn-calc" onclick="hitungAir()">Hitung Target Hidrasi</button>
+        <div class="calc-result" id="water-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-tentang">
+  <div class="section">
+    <div class="chip">Profil Platform</div>
+    <h2 class="section-title">Tentang SehatKu</h2>
+    <p class="section-desc" style="max-width: 800px; font-size:17px; line-height:1.8;">
+      SehatKu adalah platform kebugaran digital independen yang berdedikasi untuk menyediakan alat pemantauan kesehatan mandiri yang praktis, cepat, dan mudah diakses oleh seluruh masyarakat Indonesia. Kami percaya bahwa langkah awal menuju kehidupan yang lebih berkualitas dimulai dari pemahaman data personal tubuh yang akurat.<br><br>
+      Melalui integrasi kalkulator kebugaran interaktif, kami membantu Anda melacak metrik penting fisik harian tanpa memerlukan proses administrasi yang rumit, menjaga privasi data Anda 100% tetap aman di perangkat Anda.
+    </p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">Sehat<em>Ku</em></div>
+      <p>Platform kebugaran digital terpercaya untuk tracking parameter fisik dan pola hidup sehat secara berkala.</p>
+    </div>
+    <div class="footer-col">
+      <h5 style="color:var(--teal-light); margin-bottom:12px;">Menu</h5>
+      <p style="cursor:pointer; margin-bottom:8px;" onclick="showPage('home')">Beranda</p>
+      <p style="cursor:pointer; margin-bottom:8px;" onclick="showPage('kalkulator')">Kalkulator Kebugaran</p>
+      <p style="cursor:pointer;" onclick="showPage('tentang')">Tentang Kami</p>
+    </div>
+    <div class="footer-col">
+      <h5 style="color:var(--teal-light); margin-bottom:12px;">Kontak</h5>
+      <p>support@sehatku.id</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 SehatKu. Hak cipta dilindungi.</span>
+  </div>
+</footer>
+
+<script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+  const page = document.getElementById('page-' + name);
+  if (page) {
+    page.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const link = document.querySelector(`.nav-link[data-page="${name}"]`);
+  if (link) link.classList.add('active');
+}
+
+// 1. Logika Kalkulator BMI (Diperbarui dengan Angka Ideal)
+function hitungBMI() {
+  const weight = parseFloat(document.getElementById('bmi-weight').value);
+  const heightInCm = parseFloat(document.getElementById('bmi-height').value);
+  const height = heightInCm / 100;
+  const resultDiv = document.getElementById('bmi-result');
+
+  if (!weight || !heightInCm) {
+    alert('Mohon isi berat dan tinggi badan dengan benar.');
+    return;
+  }
+
+  const bmi = (weight / (height * height)).toFixed(1);
+  let status = '';
+
+  if (bmi < 18.5) status = 'Berat Badan Kurang 🟡';
+  else if (bmi >= 18.5 && bmi < 24.9) status = 'Normal (Sehat) 🟢';
+  else if (bmi >= 25 && bmi < 29.9) status = 'Berat Badan Berlebih 🟠';
+  else status = 'Obesitas 🔴';
+
+  // Menghitung estimasi berat badan ideal konvensional (Metode Lorentz modifikasi umum)
+  const idealWeight = (heightInCm - 100) - ((heightInCm - 100) * 0.1);
+
+  resultDiv.innerHTML = `<strong>Hasil BMI Anda: ${bmi}</strong><br>Status: ${status}<br><br>💡 Kisaran Berat Badan Ideal Anda: <strong>${idealWeight.toFixed(1)} kg</strong>`;
+  resultDiv.style.display = 'block';
+}
+
+// 2. Logika Kalkulator Kalori (Mifflin-St Jeor)
+function hitungKalori() {
+  const gender = document.getElementById('cal-gender').value;
+  const age = parseInt(document.getElementById('cal-age').value);
+  const weight = parseFloat(document.getElementById('cal-weight').value);
+  const height = parseFloat(document.getElementById('cal-height').value);
+  const activity = parseFloat(document.getElementById('cal-activity').value);
+  const resultDiv = document.getElementById('cal-result');
+
+  if (!age || !weight || !height) {
+    alert('Mohon lengkapi semua field parameter kalori.');
+    return;
+  }
+
+  let bmr = 0;
+  if (gender === 'male') {
+    bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+  } else {
+    bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+  }
+
+  const tdee = Math.round(bmr * activity);
+
+  resultDiv.innerHTML = `<strong>Kebutuhan Energi Harian:</strong><br>• BMR (Energi Basal): ${Math.round(bmr)} kkal<br>• TDEE (Kebutuhan Aktivitas): ${tdee} kkal per hari`;
+  resultDiv.style.display = 'block';
+}
+
+// 3. Logika Kebutuhan Air Harian
+function hitungAir() {
+  const weight = parseFloat(document.getElementById('water-weight').value);
+  const resultDiv = document.getElementById('water-result');
+
+  if (!weight) {
+    alert('Mohon masukkan berat badan Anda.');
+    return;
+  }
+
+  // Rumus dasar hidrasi harian: berat badan (kg) * 35 ml
+  const targetMl = Math.round(weight * 35);
+  const targetLiters = (targetMl / 1000).toFixed(1);
+
+  resultDiv.innerHTML = `<strong>Target Hidrasi Harian Anda:</strong><br>💧 Sekitar <strong>${targetMl} ml</strong> atau ± <strong>${targetLiters} Liter</strong> per hari agar tubuh tetap berfungsi optimal.`;
+  resultDiv.style.display = 'block';
+}
+</script>
+</body>
+</html>
